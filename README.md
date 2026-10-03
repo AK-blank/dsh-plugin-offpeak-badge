@@ -11,8 +11,8 @@ for the rule, today's day type and the exact moment of the next switch.
 ![Badge in the sidebar brand row](docs/badge.png)
 
 ```
-🐳 deepseek HARNESS  [Idle]        ← green  = off-peak (half price)
-🐳 deepseek HARNESS  [Peak]        ← amber  = peak
+🐳 deepseek HARNESS  [Idle] / 〔空闲〕   ← green = off-peak (half price)
+🐳 deepseek HARNESS  [Peak] / 〔高峰〕   ← amber = peak
 ```
 
 Collapse the sidebar and the badge becomes a dot on the collapse button, so it stays
