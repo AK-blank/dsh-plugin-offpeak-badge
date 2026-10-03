@@ -45,7 +45,8 @@ git clone https://github.com/AK-blank/dsh-plugin-offpeak-badge.git
 dsh plugin --profile web add ./dsh-plugin-offpeak-badge
 ```
 
-The same thing from the GUI: **Plugins → Add plugin**, paste the repository URL.
+The same thing from the GUI: **Plugins → Add plugin**, paste the repository URL — the
+[dialog section below](#install-from-the-gui-no-terminal) lists every accepted input.
 
 `dsh plugin` installs the dependency and appends the bundle to the profile's
 `dsh.profile.bundles`; the running `dsh web` reloads the configuration **live** — no
@@ -70,6 +71,43 @@ node install.mjs
 Options: `--home <dir>` (DSH home, default `$DSH_HOME` or `~/.dsh`), `--profile <name>`
 (default `web`), `--dir <path>`, `--copy` (default), `--link`, `--dry-run`, `--help`.
 </details>
+
+### Install from the GUI (no terminal)
+
+Open **Plugins** in the sidebar, click **Add plugin**, paste a spec and press **Install**.
+
+![The installed bundle card](docs/installed.png)
+
+The dialog parses the spec exactly like `dsh plugin add`, so these all work:
+
+| Paste into the box | Result |
+|---|---|
+| `github:AK-blank/dsh-plugin-offpeak-badge` | installs from GitHub (append `#v1.0.0` to pin a ref) |
+| `https://github.com/AK-blank/dsh-plugin-offpeak-badge` | the same, as a full repository URL |
+| `/absolute/path/to/dsh-plugin-offpeak-badge` | a local directory, installed as a pnpm link — no network, and edits to `lib/client.js` show up after a page reload |
+| `https://…/dsh-plugin-offpeak-badge.tgz` | a `.tgz` release tarball (none published yet) |
+| `dsh-plugin-offpeak-badge` | npm package name — a valid input, but the package is not on npm yet, so the lookup fails |
+
+Two things that trip people up:
+
+* **A bare `owner/repo` is rejected.** The git shorthand needs its `github:` prefix, and the
+  npm package-name rule forbids the uppercase owner, so the dialog reports an invalid spec
+  before it tries anything. Write `github:AK-blank/dsh-plugin-offpeak-badge` or the full URL.
+* **The install-source (mirror) selector only affects npm installs**, not GitHub ones.
+
+If the plugin is already installed, adding the same spec reports *already installed* — remove
+it first.
+
+### Manage it from the same page
+
+The plugin then appears under **Installed**, with a toggle for the bundle and one for the row it
+declares; **Uninstall** asks for confirmation and removes it. DSH does not auto-update plugins
+yet, so upgrading means uninstalling and installing the new version. The equivalent CLI verbs:
+
+```bash
+dsh plugin --profile web list                              # pnpm's view of profile packages
+dsh plugin --profile web remove dsh-plugin-offpeak-badge
+```
 
 ## Uninstall
 

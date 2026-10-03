@@ -39,7 +39,7 @@ git clone https://github.com/AK-blank/dsh-plugin-offpeak-badge.git
 dsh plugin --profile web add ./dsh-plugin-offpeak-badge
 ```
 
-在 GUI 里等价操作：**插件 → 添加插件**，粘贴仓库地址即可。
+在 GUI 里等价操作：**插件 → 添加插件**，粘贴仓库地址即可 —— 输入框接受的每一种写法见[下面的对话框一节](#从插件页面安装不用终端)。
 
 `dsh plugin` 会写入依赖并把该 bundle 追加到 profile 的 `dsh.profile.bundles`；正在运行的 `dsh web` 会**热加载**新配置，无需重启。角标没出现就刷新一次浏览器页面。
 
@@ -56,6 +56,38 @@ node install.mjs
 
 参数：`--home <dir>`（DSH home，默认 `$DSH_HOME` 或 `~/.dsh`）、`--profile <name>`（默认 `web`）、`--dir <path>`、`--copy`（默认）、`--link`、`--dry-run`、`--help`。
 </details>
+
+### 从「插件」页面安装（不用终端）
+
+侧边栏打开 **插件** → 右上角 **添加插件** → 粘贴下面的输入 → 点 **安装**。
+
+![安装后的插件卡片](docs/installed.png)
+
+对话框用的就是 `dsh plugin add` 那套 spec 解析，以下写法都可用：
+
+| 输入框里填 | 结果 |
+|---|---|
+| `github:AK-blank/dsh-plugin-offpeak-badge` | 从 GitHub 安装（可加 `#v1.0.0` 钉住某个 ref） |
+| `https://github.com/AK-blank/dsh-plugin-offpeak-badge` | 同上，用完整仓库地址 |
+| `/绝对路径/dsh-plugin-offpeak-badge` | 本地目录，按 pnpm link 安装 —— 免网络，改完 `lib/client.js` 刷新页面即生效 |
+| `https://…/dsh-plugin-offpeak-badge.tgz` | Release 里的 `.tgz`（目前还没发） |
+| `dsh-plugin-offpeak-badge` | npm 包名 —— 输入合法，但本包还没发布到 npm，会查不到 |
+
+两个容易踩的点：
+
+* **只写 `owner/repo` 不行。** git 简写必须带 `github:` 前缀，而这个字符串又过不了 npm 包名规则（owner 里的大写字母不被允许），所以对话框会在尝试之前就判为非法 spec。请写 `github:AK-blank/dsh-plugin-offpeak-badge` 或完整 URL。
+* **「安装源 / 镜像源」那一项只对 npm 安装生效**，对 GitHub 安装没有作用。
+
+若插件已经装过，再用同一来源添加会提示**已安装**，需要先卸载。
+
+### 在同一个页面里管理
+
+装好后它会出现在「**已安装**」里：bundle 一个开关，它声明的那条行再一个开关；「**卸载**」会先确认再移除。DSH 目前不支持插件自动更新，升级 = 先卸载再装新版。等价的命令行操作：
+
+```bash
+dsh plugin --profile web list                              # pnpm 视角的 profile 包列表
+dsh plugin --profile web remove dsh-plugin-offpeak-badge
+```
 
 ## 卸载
 
