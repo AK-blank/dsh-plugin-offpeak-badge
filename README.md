@@ -78,6 +78,23 @@ dsh plugin --profile web remove dsh-plugin-offpeak-badge   # bundle install
 node install.mjs --uninstall [--purge]                    # script install
 ```
 
+### Why it is (or is not) listed in the GUI's Plugins page
+
+That page is an inventory of **packages**: the profile's selected bundles, the profile's
+dependencies, and the optional bundles the DSH installation itself ships. `dsh plugin add`
+puts this plugin in all the right places, so it appears under **Installed** with an
+enable/disable toggle.
+
+A row written by hand into the profile's `cordis.patch.yml` — what `install.mjs` does — is a
+real loader row (the badge works exactly the same), but it belongs to no package, so that
+inventory has nothing to list. To get the page entry after a script install, switch to the
+bundle install and drop the hand-written row:
+
+```bash
+dsh plugin --profile web add /path/to/dsh-plugin-offpeak-badge
+# then delete the entry install.mjs appended to the profile's cordis.patch.yml
+```
+
 ## How the billing rule is decided
 
 The plugin implements the footnote on DeepSeek's official pricing page, verbatim:

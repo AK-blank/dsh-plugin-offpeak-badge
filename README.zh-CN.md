@@ -64,6 +64,17 @@ dsh plugin --profile web remove dsh-plugin-offpeak-badge   # bundle 方式安装
 node install.mjs --uninstall [--purge]                    # 脚本方式安装
 ```
 
+### 为什么 GUI 的「插件」页里能看到 / 看不到它
+
+那个页面统计的是**包**：profile 选中的 bundle、profile 的依赖，以及 DSH 安装自带的可选 bundle。用 `dsh plugin add` 安装会把这些位置一次写全，所以它会出现在「**已安装**」里，并带启用/停用开关与配置入口。
+
+而用 `install.mjs` 写进 profile 的 `cordis.patch.yml` 的那一行，是一条真实的 Loader 行（角标照样工作），但它不属于任何包，因此那个清单没有东西可列。脚本安装后想让「插件」页里也出现它，换成 bundle 安装并删掉手写那一行即可：
+
+```bash
+dsh plugin --profile web add /path/to/dsh-plugin-offpeak-badge
+# 然后删掉 install.mjs 追加到 profile 的 cordis.patch.yml 里的那条条目
+```
+
 ## 判定规则
 
 本插件逐字实现 DeepSeek 官方定价页脚注：
