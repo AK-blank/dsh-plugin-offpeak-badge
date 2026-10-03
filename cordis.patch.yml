@@ -1,0 +1,13 @@
+# Bundle patch for dsh-plugin-offpeak-badge.
+#
+# A profile that lists this package in `dsh.profile.bundles` (which is what
+# `dsh plugin --profile <name> add <spec>` writes) applies this layer and gets the
+# plugin row below. The row names the package itself, so Node resolution finds the
+# installed code from the profile tree.
+#
+# Rule, calendar data, dictionaries and the self-test live in the package:
+#   lib/client.js   browser half (badge, rail dot, aria-live seat, zh/en copy)
+#   selftest.mjs    offline assertions (node selftest.mjs)
+- insert:
+    - id: offpeak-badge
+      name: 'dsh-plugin-offpeak-badge'
